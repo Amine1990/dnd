@@ -1,0 +1,130 @@
+﻿# Generated with Denodo Platform 8.0 update 20230301.
+
+ENTER SINGLE USER MODE;
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+# 0 ====================================================================
+
+# #######################################
+# DATABASE
+# #######################################
+CREATE OR REPLACE DATABASE cicd '';
+
+CONNECT DATABASE cicd;
+
+# #######################################
+# FOLDERS
+# #######################################
+CREATE OR REPLACE FOLDER '/1 - Data Sources' ;
+
+CREATE OR REPLACE FOLDER '/2- Base Views' ;
+
+# #######################################
+# LISTENERS JMS
+# #######################################
+# No listeners jms
+# #######################################
+# LISTENERS KAFKA
+# #######################################
+# No listeners kafka
+# #######################################
+# DATASOURCES
+# #######################################
+CREATE OR REPLACE DATASOURCE DF ds_ff
+    FOLDER = '/1 - data sources'
+    ROUTE LOCAL 'LocalConnection' 'C:/ff_src' FILENAMEPATTERN = 'dummy.csv'
+    COLUMNDELIMITER = ';'
+    ENDOFLINEDELIMITER = '\n'
+    HEADER = FALSE;
+
+# #######################################
+# DATABASE CONFIGURATION
+# #######################################
+ALTER DATABASE cicd
+  CHARSET DEFAULT;
+
+# #######################################
+# WRAPPERS
+# #######################################
+CREATE OR REPLACE WRAPPER DF ds_ff
+    FOLDER = '/2- base views'
+    DATASOURCENAME=ds_ff
+    OUTPUTSCHEMA (
+        column0 = 'Column0',
+        column1 = 'Column1',
+        column2 = 'Column2',
+        column3 = 'Column3'
+    );
+
+# #######################################
+# STORED PROCEDURES
+# #######################################
+# No stored procedures
+# #######################################
+# TYPES
+# #######################################
+# No types
+# #######################################
+# MAPS
+# #######################################
+# No maps
+# #######################################
+# BASE VIEWS
+# #######################################
+CREATE OR REPLACE TABLE bv_ff I18N us_mst_mdt (
+        column0:text,
+        column1:text,
+        column2:text,
+        column3:text
+    )
+    FOLDER = '/2- base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD ds_ff(
+        I18N us_mst_mdt
+        CONSTRAINTS (
+             ADD column0 NOS ZERO ()
+             ADD column1 NOS ZERO ()
+             ADD column2 NOS ZERO ()
+             ADD column3 NOS ZERO ()
+        )
+        OUTPUTLIST (column0, column1, column2, column3
+        )
+        WRAPPER (df ds_ff)
+    );
+
+# #######################################
+# VIEWS
+# #######################################
+# No views
+# #######################################
+# ASSOCIATIONS
+# #######################################
+# No associations
+# #######################################
+# WEBSERVICES
+# #######################################
+# No web services
+# #######################################
+# WIDGETS
+# #######################################
+# No widgets
+# #######################################
+# WEBCONTAINER WEB SERVICE DEPLOYMENTS
+# #######################################
+# No deployed web services
+# #######################################
+# WEBCONTAINER WIDGET DEPLOYMENTS
+# #######################################
+# No deployed widgets
+# #######################################
+# Closing connection with database cicd
+# #######################################
+CLOSE;
+
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+EXIT SINGLE USER MODE;
