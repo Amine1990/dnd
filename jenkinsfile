@@ -1,11 +1,27 @@
 pipeline {
     agent any
-
+	
+	environment{
+		DENODO_SM_HOSTNAME = 'http://localhost:39090'
+        DENODO_HOSTNAME = 'http://localhost:29090'
+		DENODO_TARGET_ENVID = 6      
+        URL_SONARQUBE = 'http://localhost:19000'
+        URL_VCS = 'https://github.com/cavernamagix/denododemo.git'
+        JENKINS_WORKSPACE ='C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Main_Demo_Lite_SCMPipeline'
+        SONARQUBE_SCANNER ='D:\\work\\dev\\tools\\sonar-scanner-4.7.0.2747-windows\\bin\\sonar-scanner'
+        DENODO_TESTING_TOOL = 'C:\\tools\\denodo-testing-tool-8.0\\bin\\denodo-test.bat'
+        DENODO_TEST_CONFIG = 'file:C:\\tools\\denodo-testing-tool-8.0\\samples\\samples1\\conf\\configuration.properties'
+        DENODO_TESTS = 'C:/tools/denodo-testing-tool-8.0/samples/samples1/tests'
+	}
+	
 
     stages {
-        stage('Build') {
+        stage('STG_1_Testing_Tools') {
             steps {
-                echo 'Building..'
+				echo 'STG_1_Testing_Tools'
+                bat '%DENODO_TESTING_TOOL% %DENODO_TEST_CONFIG% %DENODO_TESTS%'
+                
+                echo "@@@ --- SUCCESS"
             }
         }
         stage('Test') {
