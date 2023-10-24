@@ -28,7 +28,7 @@ pipeline {
                 echo '@@@ --- 2_Demo_Lite --- SonarQube Code Review'
                 // Code Review with Sonarqube
                 bat '''cd %JENKINS_WORKSPACE%"
-                "%SONARQUBE_SCANNER%" -D"sonar.projectKey=denodo_project" -D"sonar.sources=." -D"sonar.host.url=%URL_SONARQUBE%" -D"sonar.login=sqp_cb7fdf785a528525c981f9d51ae20515ec71f3cd"
+                "%SONARQUBE_SCANNER%" -D"sonar.projectKey=denodo-project" -D"sonar.sources=." -D"sonar.host.url=%URL_SONARQUBE%" -D"sonar.login=sqp_cb7fdf785a528525c981f9d51ae20515ec71f3cd"
                 '''
             }
         }
