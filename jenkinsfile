@@ -5,16 +5,16 @@ pipeline {
 		DENODO_SM_HOSTNAME = 'http://localhost:39090'
         DENODO_HOSTNAME = 'http://localhost:29090'
 		DENODO_TARGET_ENVID = 6      
-        URL_SONARQUBE = 'http://localhost:19000'
+        URL_SONARQUBE = 'http://localhost:9000'
         URL_VCS = 'https://github.com/cavernamagix/denododemo.git'
         JENKINS_WORKSPACE ='C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Main_Demo_Lite_SCMPipeline'
-        SONARQUBE_SCANNER ='D:\\work\\dev\\tools\\sonar-scanner-4.7.0.2747-windows\\bin\\sonar-scanner'
+        SONARQUBE_SCANNER ='C:\\Users\\MehdiAmineRadi\\Downloads\\sonar-scanner-cli-5.0.1.3006-windows\\sonar-scanner-5.0.1.3006-windows\\bin\\sonar-scanner'
         DENODO_TESTING_TOOL = 'C:\\tools\\denodo-testing-tool-8.0\\bin\\denodo-test.bat'
         DENODO_TEST_CONFIG = 'file:C:\\tools\\denodo-testing-tool-8.0\\samples\\samples1\\conf\\configuration.properties'
         DENODO_TESTS = 'C:/tools/denodo-testing-tool-8.0/samples/samples1/tests'
 	}
 	
-
+sonar-scanner -D"sonar.projectKey=denodo-project" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=sqp_cb7fdf785a528525c981f9d51ae20515ec71f3cd"
     stages {
         stage('STG_1_Testing_Tools') {
             steps {
@@ -24,9 +24,13 @@ pipeline {
                 echo "@@@ --- SUCCESS"
             }
         }
-        stage('Test') {
+        stage('2_Demo_Lite_QA_Code_Review') {
             steps {
-                echo 'Testing..'
+                echo '@@@ --- 2_Demo_Lite --- SonarQube Code Review'
+                // Code Review with Sonarqube
+                bat '''cd %JENKINS_WORKSPACE%"
+                "%SONARQUBE_SCANNER%" -D"sonar.projectKey=denodo_project" -D"sonar.sources=." -D"sonar.host.url=%URL_SONARQUBE%" -D"sonar.login=sqp_cb7fdf785a528525c981f9d51ae20515ec71f3cd"
+                '''
             }
         }
         stage('Deploy') {
