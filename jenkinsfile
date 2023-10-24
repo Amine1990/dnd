@@ -14,7 +14,6 @@ pipeline {
         DENODO_TESTS = 'C:/tools/denodo-testing-tool-8.0/samples/samples1/tests'
 	}
 	
-sonar-scanner -D"sonar.projectKey=denodo-project" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=sqp_cb7fdf785a528525c981f9d51ae20515ec71f3cd"
     stages {
         stage('STG_1_Testing_Tools') {
             steps {
