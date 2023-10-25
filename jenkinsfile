@@ -3,7 +3,7 @@ pipeline {
 	
 	environment{
 		DENODO_SM_HOSTNAME = 'http://localhost:39090'
-        DENODO_HOSTNAME = 'http://localhost:29090'
+        DENODO_HOSTNAME = 'http://localhost:19090'
 		DENODO_TARGET_ENVID = 6      
         URL_SONARQUBE = 'http://localhost:9000'
         URL_VCS = 'https://github.com/cavernamagix/denododemo.git'
@@ -32,9 +32,17 @@ pipeline {
                 '''
             }
         }
-        stage('Deploy') {
+        stage('3_Creating_Revision') {
             steps {
-                echo 'Deploying....'
+                echo '3_Creating_Revision'
+				script{
+				
+					def response = httpRequest url: "${env.DENODO_HOSTNAME}/server/admin/createrevision/views/p_createrevision?vdb_name=samples1", customHeaders: [[name: 'content-type', value: "application/json;subtype=denodo-8.0;charset=UTF-8"],[name: 'Authorization', value: "Basic YWRtaW46YWRtaW4="]]
+
+                    println "@@@ --- Status: ${response.status}"
+                    println "@@@ --- Response: ${response.content}"
+                    println "@@@ --- Headers: ${response.headers}"
+				}
             }
         }
     }
