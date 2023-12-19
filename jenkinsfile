@@ -35,14 +35,7 @@ pipeline {
         stage('3_Creating_Revision') {
             steps {
                 echo '3_Creating_Revision'
-				script{
-	        	def response = httpRequest consoleLogResponseBody: true, contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: toJson('CREATE ROLE denodo_developer_test GRANT ALL PRIVILEGES ON cicd;'), url: "${env.DENODO_HOSTNAME}", validResponseCodes: '200'
-
-
-                    println "@@@ --- Status: ${response.status}"
-                    println "@@@ --- Response: ${response.content}"
-                    println "@@@ --- Headers: ${response.headers}"
-				}
+			
             }
         }
     }
